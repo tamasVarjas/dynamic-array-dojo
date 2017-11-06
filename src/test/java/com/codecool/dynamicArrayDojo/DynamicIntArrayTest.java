@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Your goal is to make all these tests pass!
+// Do not modify this file.
 class DynamicIntArrayTest {
 
     @Test

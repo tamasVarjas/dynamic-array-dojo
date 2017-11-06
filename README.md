@@ -1,3 +1,3 @@
-# java-dynamic-array-dojo
+# Dynamic array dojo
 
-Dojo to practice the dynamic array data structure
+Dojo to practice the dynamic array data structure. Your goal is to make all test pass!
