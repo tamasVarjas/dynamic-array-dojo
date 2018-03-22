@@ -4,6 +4,7 @@ public class DynamicIntArray {
 
     private int[] array;
     private int lastIndex;
+    private static final double ARRAY_LENGTH_SHRINK_RATIO = 0.4;
 
     DynamicIntArray() {
         array = new int[10];
@@ -18,7 +19,7 @@ public class DynamicIntArray {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(array.length * 2);
-        for (int i = 0; i <= lastIndex; i++ ) {
+        for (int i = 0; i <= lastIndex; i++) {
             sb.append(" ");
             sb.append(array[i]);
         }
@@ -34,7 +35,7 @@ public class DynamicIntArray {
     }
 
     private void shrinkUnnecessaryArrayLength() {
-        if (lastIndex < array.length / 2 - 1) {
+        if (lastIndex < array.length * ARRAY_LENGTH_SHRINK_RATIO - 1) {
             int[] tempArray = array;
             array = new int[array.length / 2];
             System.arraycopy(tempArray, 0, array, 0, array.length);
@@ -52,13 +53,13 @@ public class DynamicIntArray {
     }
 
     public void insert(int indexToInsert, int valueToInsert) {
-        expandArrayLengthIfNecessary();
         if (indexToInsert > lastIndex) {
-            array[++lastIndex] = valueToInsert;
-        } else {
-            System.arraycopy(array, indexToInsert, array, indexToInsert + 1, ++lastIndex - indexToInsert);
-            array[indexToInsert] = valueToInsert;
+            add(valueToInsert);
+            return;
         }
+        expandArrayLengthIfNecessary();
+        System.arraycopy(array, indexToInsert, array, indexToInsert + 1, ++lastIndex - indexToInsert);
+        array[indexToInsert] = valueToInsert;
     }
 
 }
