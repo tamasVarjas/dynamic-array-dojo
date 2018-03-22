@@ -25,17 +25,37 @@ public class DynamicIntArray {
         return sb.toString();
     }
 
-    public void add(int num) {
+    public void add(int valueToAdd) {
         if (lastIndex == array.length - 1) {
             int[] tempArray = array;
             array = new int[array.length * 2];
             System.arraycopy(tempArray, 0, array, 0, tempArray.length);
         }
-        array[++lastIndex] = num;
+        array[++lastIndex] = valueToAdd;
     }
 
     public void remove(int indexToRemove) {
         System.arraycopy(array, indexToRemove + 1, array, indexToRemove, lastIndex - indexToRemove);
         lastIndex--;
+        if (lastIndex < array.length / 2 - 1) {
+            int[] tempArray = array;
+            array = new int[array.length / 2];
+            System.arraycopy(tempArray, 0, array, 0, array.length);
+        }
     }
+
+    public void insert(int indexToInsert, int valueToInsert) {
+        if (lastIndex == array.length - 1) {
+            int[] tempArray = array;
+            array = new int[array.length * 2];
+            System.arraycopy(tempArray, 0, array, 0, tempArray.length);
+        }
+        if (indexToInsert > lastIndex) {
+            array[++lastIndex] = valueToInsert;
+        } else {
+            System.arraycopy(array, indexToInsert, array, indexToInsert + 1, ++lastIndex - indexToInsert);
+            array[indexToInsert] = valueToInsert;
+        }
+    }
+
 }
