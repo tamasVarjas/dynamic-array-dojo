@@ -5,12 +5,12 @@ public class DynamicIntArray {
     private int[] array;
     private int lastIndex;
 
-    public DynamicIntArray() {
+    DynamicIntArray() {
         array = new int[10];
         lastIndex = -1;
     }
 
-    public DynamicIntArray(int elementCount) {
+    DynamicIntArray(int elementCount) {
         array = new int[elementCount];
         lastIndex = -1;
     }
@@ -25,18 +25,15 @@ public class DynamicIntArray {
         return sb.toString();
     }
 
-    public void add(int valueToAdd) {
+    private void expandArrayLengthIfNecessary() {
         if (lastIndex == array.length - 1) {
             int[] tempArray = array;
             array = new int[array.length * 2];
             System.arraycopy(tempArray, 0, array, 0, tempArray.length);
         }
-        array[++lastIndex] = valueToAdd;
     }
 
-    public void remove(int indexToRemove) {
-        System.arraycopy(array, indexToRemove + 1, array, indexToRemove, lastIndex - indexToRemove);
-        lastIndex--;
+    private void shrinkUnnecessaryArrayLength() {
         if (lastIndex < array.length / 2 - 1) {
             int[] tempArray = array;
             array = new int[array.length / 2];
@@ -44,12 +41,18 @@ public class DynamicIntArray {
         }
     }
 
+    public void add(int valueToAdd) {
+        expandArrayLengthIfNecessary();
+        array[++lastIndex] = valueToAdd;
+    }
+
+    public void remove(int indexToRemove) {
+        System.arraycopy(array, indexToRemove + 1, array, indexToRemove, lastIndex-- - indexToRemove);
+        shrinkUnnecessaryArrayLength();
+    }
+
     public void insert(int indexToInsert, int valueToInsert) {
-        if (lastIndex == array.length - 1) {
-            int[] tempArray = array;
-            array = new int[array.length * 2];
-            System.arraycopy(tempArray, 0, array, 0, tempArray.length);
-        }
+        expandArrayLengthIfNecessary();
         if (indexToInsert > lastIndex) {
             array[++lastIndex] = valueToInsert;
         } else {
